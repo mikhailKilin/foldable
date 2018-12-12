@@ -29,4 +29,37 @@ const arrayToString = (acc: number, curr: number) => acc + curr;
 console.log('identity', toArray(arr).reduce(arrayToString, 0), arr.reduce(arrayToString, 0))
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 console.log('foldMap array sum', foldMap(array, monoidSum)(arr, identity))

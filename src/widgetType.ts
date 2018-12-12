@@ -104,9 +104,17 @@ const renderWidgetClass = (widget: TWidget): string => {
 	return widget.fold(
 		(type: TSizableWidgetType,size: WidgetSize) => {
 		return `${fromWidgetTypeToString(type)}_${fromWidgetSizeToString(size)}`
-	}, (type: TGoalWidgetType, size: WidgetSize.SingleColumn,numb: number) => `${fromWidgetTypeToString(type)}_${fromWidgetSizeToString(size)}_${numb}`, (type: TDefaultWidgetType, size: WidgetSize.SingleColumn) => `${fromWidgetTypeToString(type)}_${fromWidgetSizeToString(size)}`)
+	}, (type: TGoalWidgetType, size: WidgetSize.SingleColumn,numb: number) => `${fromWidgetTypeToString(type)}_${fromWidgetSizeToString(size)}_${numb}`, 
+	(type: TDefaultWidgetType, size: WidgetSize.SingleColumn) => `${fromWidgetTypeToString(type)}_${fromWidgetSizeToString(size)}`)
 }
 
 console.log('fold goal widget', renderWidgetClass(goalWidget));
 console.log('fold sizable widget',renderWidgetClass(sizableWidget));
 console.log('fold default widget', renderWidgetClass(defaultWidget));
+
+const getIdentityWidget = (widget: TWidget): TWidget => {
+	return widget.fold((type: TSizableWidgetType, size: WidgetSize) => liftSizable(type, size), 
+	(type: TGoalWidgetType, size: WidgetSize.SingleColumn,numb: number) => liftGoal(numb), (type: TDefaultWidgetType, size: WidgetSize.SingleColumn) => liftDefault(type))
+}
+
+console.log('is identity', renderWidgetClass(getIdentityWidget(goalWidget)) === renderWidgetClass(goalWidget))
