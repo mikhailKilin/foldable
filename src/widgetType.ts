@@ -21,24 +21,6 @@ type TDefaultWidgetType =
 	| WidgetType.RecentDocuments;
 type TGoalWidgetType =  WidgetType.ProgressToGoal
 
-type TSizableWidget = {
-	type: TSizableWidgetType;
-	size: WidgetSize
-};
-
-type TGoalWidget = {
-	type: TGoalWidgetType;
-	size: WidgetSize.SingleColumn;
-	someProp: number
-};
-
-type TDefaultWidget = {
-	type: TDefaultWidgetType;
-	size: WidgetSize.SingleColumn;
-};
-
-type TWidget = TGoalWidget | TSizableWidget | TDefaultWidget;
-
 const fromWidgetSizeToString = (size: WidgetSize): string => {
 	switch(size) {
 		case WidgetSize.SingleColumn: return 'SingleColumn'
@@ -58,7 +40,7 @@ const fromWidgetTypeToString = (type: WidgetType): string => {
 	}
 }
 
-class TGoalWidgetClass {
+class TGoalWidget {
 	type: TGoalWidgetType;
 	size: WidgetSize.SingleColumn;
 	someProp: number
@@ -76,7 +58,7 @@ class TGoalWidgetClass {
 	}
 }
 
-class TSizableWidgetClass {
+class TSizableWidget {
 	type: TSizableWidgetType;
 	size: WidgetSize;
 
@@ -92,7 +74,7 @@ class TSizableWidgetClass {
 	}
 }
 
-class TDefaultWidgetClass {
+class TDefaultWidget {
 	type: TDefaultWidgetType;
 	size: WidgetSize.SingleColumn;
 
@@ -108,17 +90,17 @@ class TDefaultWidgetClass {
 	}
 }
 
-type TWidgetClass = TGoalWidgetClass | TSizableWidgetClass | TDefaultWidgetClass
+type TWidget = TGoalWidget | TSizableWidget | TDefaultWidget
 
-const liftGoal = (numb: number): TWidgetClass => new TGoalWidgetClass(WidgetType.ProgressToGoal, WidgetSize.SingleColumn, numb);
-const liftSizable = (type: TSizableWidgetType, size: WidgetSize): TWidgetClass => new TSizableWidgetClass(type, size);
-const liftDefault = (type: TDefaultWidgetType): TWidgetClass => new TDefaultWidgetClass(type)
+const liftGoal = (numb: number): TWidget => new TGoalWidget(WidgetType.ProgressToGoal, WidgetSize.SingleColumn, numb);
+const liftSizable = (type: TSizableWidgetType, size: WidgetSize): TWidget => new TSizableWidget(type, size);
+const liftDefault = (type: TDefaultWidgetType): TWidget => new TDefaultWidget(type)
 
 const goalWidget = liftGoal(4);
 const sizableWidget = liftSizable(WidgetType.AssetAllocation, WidgetSize.DoubleColumn);
 const defaultWidget = liftDefault( WidgetType.ContactAdvisor);
 
-const renderWidgetClass = (widget: TWidgetClass): string => {
+const renderWidgetClass = (widget: TWidget): string => {
 	return widget.fold(
 		(type: TSizableWidgetType,size: WidgetSize) => {
 		return `${fromWidgetTypeToString(type)}_${fromWidgetSizeToString(size)}`
